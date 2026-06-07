@@ -87,12 +87,12 @@ Use **New Submission → Demo Scenarios** to prefill the form. Submit to verify 
 
 | Scenario | Expected decision | Key trigger |
 |----------|-------------------|-------------|
-| Approved Vendor | **APPROVED** | Complete fields + 4 sample PDFs auto-attached |
-| Missing Document | **PENDING** | No PDFs (+ missing business category) |
-| Bank Name Mismatch | **PENDING** | `BANK_NAME_MISMATCH` (MEDIUM) |
-| Duplicate Vendor | **REJECTED** | `DUPLICATE_TAX_ID` (CRITICAL) |
-| Blocked Vendor | **REJECTED** | `BLOCKED_VENDOR_MATCH` (CRITICAL) |
-| Wrong Document Uploaded | **PENDING** | `WRONG_DOCUMENT_TYPE` (MEDIUM) |
+| Approved Vendor | **APPROVED** | Complete fields + matching Nexora PDFs |
+| Missing Document | **PENDING** | No PDFs + missing business category |
+| Bank Name Mismatch | **PENDING** | `BANK_NAME_MISMATCH` with complete Helix PDFs |
+| Duplicate Vendor | **REJECTED** | `DUPLICATE_TAX_ID` with complete BrightLayer PDFs |
+| Blocked Vendor | **REJECTED** | `BLOCKED_VENDOR_MATCH` with complete Blackstone PDFs |
+| Wrong Document Uploaded | **PENDING** | `WRONG_DOCUMENT_TYPE` (mis-slotted Nexora PDFs; LLM required) |
 
 ### Edge Cases
 
@@ -103,7 +103,7 @@ Use **New Submission → Demo Scenarios** to prefill the form. Submit to verify 
 - **Reset all runs** — clears workflow history; preserves `existing_vendors`
 - **Reseed existing vendors** — restores the four default seed records
 
-Sample PDFs live in `frontend/public/samples/` and are auto-loaded for the Approved Vendor scenario. Generate them with `mvn test -Dtest=GenerateSamplePdfsTest` from the `backend` directory if the folder is empty. The Wrong Document Uploaded scenario places a bank proof PDF in the tax registration slot (requires LLM configured for type detection).
+Sample PDFs live in `frontend/public/samples/<scenario>/` and are auto-loaded per demo scenario. Generate them with `mvn test -Dtest=GenerateSamplePdfsTest` from the `backend` directory if the folder is empty. Each edge-case scenario uses PDFs that match its vendor data so completeness and consistency checks pass before the intended rule fires.
 
 ## Setup
 

@@ -55,8 +55,8 @@ export default function NewSubmission() {
       if (scenario.attachMisSlottedSamplePdfs) {
         const sampleDocuments = await loadMisSlottedSamplePdfs();
         setDocuments(sampleDocuments);
-      } else if (scenario.attachSamplePdfs) {
-        const sampleDocuments = await loadSamplePdfs();
+      } else if (scenario.samplePdfSet) {
+        const sampleDocuments = await loadSamplePdfs(scenario.samplePdfSet);
         setDocuments(sampleDocuments);
       } else {
         setDocuments(emptyDocumentUploads());
