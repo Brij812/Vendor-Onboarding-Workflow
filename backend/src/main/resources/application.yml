@@ -27,7 +27,7 @@ app:
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
   uploads:
-    directory: ${UPLOADS_DIR:./uploads}
+    directory: ${APP_UPLOAD_DIR:${UPLOADS_DIR:./uploads}}
   workflow:
     step-delay-ms: ${WORKFLOW_STEP_DELAY_MS:800}
   llm:

@@ -14,12 +14,16 @@ FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
+RUN addgroup -S spring && adduser -S spring -G spring \
+    && mkdir -p /app/uploads \
+    && chown spring:spring /app/uploads
 
 COPY --from=build /app/target/vendor-onboarding-0.0.1-SNAPSHOT.jar app.jar
 
 ENV PORT=8080
+ENV APP_UPLOAD_DIR=/app/uploads
+
+USER spring:spring
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

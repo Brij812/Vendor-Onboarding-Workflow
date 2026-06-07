@@ -16,7 +16,7 @@ public class DocumentStorageService {
 
     private final Path uploadsRoot;
 
-    public DocumentStorageService(@Value("${app.uploads.directory:./uploads}") String uploadsDirectory) {
+    public DocumentStorageService(@Value("${app.uploads.directory}") String uploadsDirectory) {
         this.uploadsRoot = Paths.get(uploadsDirectory).toAbsolutePath().normalize();
     }
 
