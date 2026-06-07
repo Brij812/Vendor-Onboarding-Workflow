@@ -12,6 +12,7 @@ import VendorDetailsPanel from '../components/VendorDetailsPanel';
 import WorkflowTimeline from '../components/WorkflowTimeline';
 import { useWorkflowRunDetail } from '../hooks/useWorkflowRunDetail';
 import { formatRiskScore } from '../utils/format';
+import { getStepLabel } from '../utils/stepLabels';
 
 export default function RunDetails() {
   const { id } = useParams<{ id: string }>();
@@ -96,15 +97,22 @@ export default function RunDetails() {
           </div>
         </div>
         <dl className="detail-grid run-header-meta">
-          <div>
+          <div className="run-header-meta-step">
             <dt>Current Step</dt>
-            <dd>{run.currentStep ?? '—'}</dd>
+            <dd>{run.currentStep ? getStepLabel(run.currentStep) : '—'}</dd>
           </div>
           <div>
             <dt>Polling</dt>
-            <dd>{isPolling ? 'Active (every 1s)' : 'Stopped'}</dd>
+            <dd>
+              <span
+                className={`run-polling-status${isPolling ? ' run-polling-status--active' : ''}`}
+                title={isPolling ? 'Refreshing run status every second' : undefined}
+              >
+                {isPolling ? 'Live' : 'Stopped'}
+              </span>
+            </dd>
           </div>
-          <div>
+          <div className="run-header-meta-id">
             <dt>Workflow Run ID</dt>
             <dd className="mono">{run.workflowRunId}</dd>
           </div>

@@ -375,6 +375,41 @@ body {
   margin-bottom: 1rem;
 }
 
+.run-header-meta {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.run-header-meta-step {
+  grid-column: 1 / -1;
+}
+
+.run-header-meta > div {
+  min-width: 0;
+}
+
+.run-header-meta dd {
+  overflow-wrap: anywhere;
+}
+
+.run-polling-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.run-polling-status::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: #9ca3af;
+  flex-shrink: 0;
+}
+
+.run-polling-status--active::before {
+  background: #22c55e;
+}
+
 .detail-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
