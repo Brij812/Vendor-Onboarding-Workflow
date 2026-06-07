@@ -1,22 +1,10 @@
+import { fetchJson } from './client';
 import type {
   ManualReview,
   ManualReviewRequest,
   WorkflowRunDetails,
   WorkflowRunListItem,
 } from '../types/workflow';
-
-async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, init);
-  if (!response.ok) {
-    const body = await response.json().catch(() => null);
-    const message =
-      body && typeof body === 'object' && 'message' in body
-        ? String((body as { message: string }).message)
-        : `Request failed (${response.status}): ${url}`;
-    throw new Error(message);
-  }
-  return response.json() as Promise<T>;
-}
 
 export async function getWorkflowRuns(): Promise<WorkflowRunListItem[]> {
   return fetchJson<WorkflowRunListItem[]>('/api/workflow-runs');

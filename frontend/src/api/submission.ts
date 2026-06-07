@@ -1,3 +1,4 @@
+import { apiUrl } from './client';
 import type {
   ApiErrorBody,
   CreateVendorSubmissionResponse,
@@ -42,7 +43,7 @@ export async function createVendorSubmission(
     return createVendorSubmissionWithDocuments(payload, documents);
   }
 
-  const response = await fetch('/api/vendor-submissions/review', {
+  const response = await fetch(apiUrl('/api/vendor-submissions/review'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -78,7 +79,7 @@ async function createVendorSubmissionWithDocuments(
     formData.append('complianceDeclaration', documents.complianceDeclaration);
   }
 
-  const response = await fetch('/api/vendor-submissions/review', {
+  const response = await fetch(apiUrl('/api/vendor-submissions/review'), {
     method: 'POST',
     body: formData,
   });
