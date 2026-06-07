@@ -7,6 +7,7 @@ import {
   formatMultilineList,
   formatRiskScore,
 } from '../utils/format';
+import { buildGmailComposeUrl, buildOutlookComposeUrl } from '../utils/emailCompose';
 import { DOCUMENT_TYPE_LABELS } from '../utils/documentLabels';
 import EmptyState from './EmptyState';
 import StatusBadge from './StatusBadge';
@@ -16,6 +17,7 @@ interface RunResultSectionsProps {
   decision: Decision | null;
   communication: Communication | null;
   auditSummary: AuditSummary | null;
+  recipientEmail?: string | null;
 }
 
 function SectionCard({ title, children }: { title: string; children: ReactNode }) {
@@ -79,6 +81,7 @@ export default function RunResultSections({
   decision,
   communication,
   auditSummary,
+  recipientEmail,
 }: RunResultSectionsProps) {
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
 
@@ -101,6 +104,17 @@ export default function RunResultSections({
       setCopyMessage('Unable to copy email to clipboard.');
     }
   };
+
+  const emailSubject = communication?.subject?.trim() ?? '';
+  const emailBody = communication?.body?.trim() ?? '';
+  const emailRecipient = recipientEmail?.trim() ?? '';
+  const canSendEmail = Boolean(emailSubject || emailBody);
+  const gmailComposeUrl = canSendEmail
+    ? buildGmailComposeUrl(emailRecipient || undefined, emailSubject, emailBody)
+    : null;
+  const outlookComposeUrl = canSendEmail
+    ? buildOutlookComposeUrl(emailRecipient || undefined, emailSubject, emailBody)
+    : null;
 
   return (
     <>
@@ -246,6 +260,36 @@ export default function RunResultSections({
                 </div>
               )}
             </dl>
+            {canSendEmail && (
+              <div className="communication-send-email">
+                <p className="communication-send-label">Send email</p>
+                <div className="communication-send-buttons">
+                  <a
+                    href={gmailComposeUrl ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary btn-sm"
+                    aria-disabled={!gmailComposeUrl}
+                  >
+                    Open in Gmail
+                  </a>
+                  <a
+                    href={outlookComposeUrl ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary btn-sm"
+                    aria-disabled={!outlookComposeUrl}
+                  >
+                    Open in Outlook
+                  </a>
+                </div>
+                {!emailRecipient && (
+                  <p className="muted communication-send-hint">
+                    Vendor contact email is missing, so the recipient cannot be pre-filled.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         )}
       </SectionCard>

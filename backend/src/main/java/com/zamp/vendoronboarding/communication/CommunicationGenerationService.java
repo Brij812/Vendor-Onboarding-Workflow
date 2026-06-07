@@ -23,6 +23,7 @@ public class CommunicationGenerationService {
             Do not invent facts that are not provided in the prompt.
             Do not change the decision status.
             Do not say the submission is approved unless decision status is APPROVED.
+            Do not mention or include internal risk scores in the subject or body.
             Keep the tone professional and concise.
             JSON format: { "subject": "...", "body": "..." }
             """;
@@ -105,11 +106,11 @@ public class CommunicationGenerationService {
                 : "Unknown Vendor";
 
         StringBuilder prompt = new StringBuilder();
-        prompt.append("Draft a vendor email using only the facts below.\n\n");
+        prompt.append("Draft a vendor email using only the facts below.\n");
+        prompt.append("Do not mention or include internal risk scores in the email.\n\n");
         prompt.append("Vendor name: ").append(vendorName).append('\n');
         prompt.append("Decision status: ").append(decision.status().name()).append('\n');
-        prompt.append("Risk score: ").append(decision.riskScore()).append('\n');
-        prompt.append("Reason summary: ").append(decision.reasonSummary()).append('\n');
+        prompt.append("Reason summary: ").append(sanitizeReasonSummary(decision.reasonSummary())).append('\n');
 
         prompt.append("\nIssues:\n");
         if (issues == null || issues.isEmpty()) {
@@ -179,5 +180,15 @@ public class CommunicationGenerationService {
         }
         String value = node.asText();
         return value == null || value.isBlank() ? null : value.trim();
+    }
+
+    private String sanitizeReasonSummary(String reasonSummary) {
+        if (reasonSummary == null || reasonSummary.isBlank()) {
+            return "None";
+        }
+        return reasonSummary
+                .replaceAll("(?i)\\s*with risk score \\d+\\.?", "")
+                .replaceAll("(?i)\\brisk score:?\\s*\\d+\\.?", "")
+                .trim();
     }
 }

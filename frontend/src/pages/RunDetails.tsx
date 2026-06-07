@@ -145,6 +145,7 @@ export default function RunDetails() {
         decision={run.decision}
         communication={run.communication}
         auditSummary={run.auditSummary}
+        recipientEmail={run.vendor.contactEmail}
       />
     </div>
   );

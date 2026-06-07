@@ -114,6 +114,18 @@ class CommunicationGenerationServiceTest {
         assertEquals("Please review the requested changes.", draft.body());
     }
 
+    @Test
+    void buildUserPrompt_omitsRiskScoreFromPrompt() {
+        String prompt = service.buildUserPrompt(
+                vendor("Acme Cloud Services Pvt Ltd"),
+                decision(DecisionStatus.PENDING, 65),
+                List.of(issue())
+        );
+
+        assertFalse(prompt.contains("Risk score:"));
+        assertTrue(prompt.contains("Do not mention or include internal risk scores"));
+    }
+
     private VendorSubmission vendor(String legalName) {
         VendorSubmission submission = new VendorSubmission();
         submission.setLegalName(legalName);
