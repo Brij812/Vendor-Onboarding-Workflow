@@ -25,7 +25,7 @@ app:
   demo:
     enabled: ${DEMO_ENDPOINTS_ENABLED:true}
   cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000,https://vendor-onboarding-workflow.vercel.app,https://*.vercel.app}
   uploads:
     directory: ${APP_UPLOAD_DIR:${UPLOADS_DIR:./uploads}}
   workflow:
