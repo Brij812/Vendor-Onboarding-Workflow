@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: vendor_onboarding
+      POSTGRES_USER: vendor_app
+      POSTGRES_PASSWORD: vendor_app_secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vendor_app -d vendor_onboarding"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:

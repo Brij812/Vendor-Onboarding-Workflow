@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property name="WORKFLOW_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} [run=%X{workflowRunId:--}] [vendor=%X{vendorName:--}] [agent=%X{agent:--}] - %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${WORKFLOW_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.zamp.vendoronboarding.workflow" level="INFO"/>
+    <logger name="com.zamp.vendoronboarding.agents" level="INFO"/>
+    <logger name="com.zamp.vendoronboarding.ai" level="INFO"/>
+    <logger name="com.zamp.vendoronboarding.document" level="INFO"/>
+    <logger name="com.zamp.vendoronboarding.communication" level="INFO"/>
+    <logger name="com.zamp.vendoronboarding.audit" level="INFO"/>
+    <logger name="com.zamp.vendoronboarding.service.VendorSubmissionService" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

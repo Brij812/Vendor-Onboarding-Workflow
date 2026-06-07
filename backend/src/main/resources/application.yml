@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: vendor-onboarding-workflow-engine
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:vendor_onboarding}
+    username: ${DB_USER:vendor_app}
+    password: ${DB_PASSWORD:vendor_app_secret}
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  demo:
+    enabled: ${DEMO_ENDPOINTS_ENABLED:true}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+  uploads:
+    directory: ${UPLOADS_DIR:./uploads}
+  workflow:
+    step-delay-ms: ${WORKFLOW_STEP_DELAY_MS:800}
+  llm:
+    provider: ${LLM_PROVIDER:openai}
+    api-key: ${LLM_API_KEY:}
+    model: ${LLM_MODEL:gpt-4o-mini}
+    base-url: ${LLM_BASE_URL:https://api.openai.com}
+    timeout-ms: ${LLM_TIMEOUT_MS:30000}
